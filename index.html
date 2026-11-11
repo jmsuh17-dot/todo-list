@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>할일 목록</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <!-- [A] 헤더 -->
+    <header class="app-header">
+      <div class="app-header__titles">
+        <h1 class="app-title">
+          <svg class="app-title__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          할일 목록
+        </h1>
+        <p class="app-subtitle">오늘 할 일을 기록하고 관리하세요</p>
+      </div>
+      <p class="app-today" id="today-label"></p>
+    </header>
+
+    <!-- [B] 요약 정보 -->
+    <section class="summary" aria-label="요약 정보">
+      <ul class="summary__cards">
+        <li class="summary-card">
+          <span class="summary-card__label">전체</span>
+          <span class="summary-card__value summary-card__value--total" id="count-total">0</span>
+        </li>
+        <li class="summary-card">
+          <span class="summary-card__label">진행중</span>
+          <span class="summary-card__value summary-card__value--active" id="count-active">0</span>
+        </li>
+        <li class="summary-card">
+          <span class="summary-card__label">완료</span>
+          <span class="summary-card__value summary-card__value--done" id="count-done">0</span>
+        </li>
+        <li class="summary-card">
+          <span class="summary-card__label">기한초과</span>
+          <span class="summary-card__value summary-card__value--overdue" id="count-overdue">0</span>
+        </li>
+      </ul>
+      <div class="progress">
+        <span class="progress__label">진행률</span>
+        <div class="progress__track" id="progress-bar" role="progressbar"
+             aria-label="진행률" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress__fill" id="progress-fill"></div>
+        </div>
+        <span class="progress__text" id="progress-text">0%</span>
+      </div>
+    </section>
+
+    <!-- [C] 입력 폼 -->
+    <form class="todo-form" id="todo-form" novalidate>
+      <div class="todo-form__row">
+        <div class="todo-form__text">
+          <label for="todo-text" class="sr-only">할일</label>
+          <input type="text" id="todo-text" class="input" placeholder="할일을 입력하세요"
+                 maxlength="100" autocomplete="off" aria-describedby="form-error char-count">
+        </div>
+        <div class="todo-form__sub">
+          <label for="todo-date" class="sr-only">날짜</label>
+          <input type="date" id="todo-date" class="input input--date" aria-describedby="form-error">
+          <button type="submit" class="btn btn--primary">추가</button>
+        </div>
+      </div>
+      <div class="todo-form__meta">
+        <p class="form-error" id="form-error" aria-live="polite"></p>
+        <span class="char-count" id="char-count" aria-live="off">0/100</span>
+      </div>
+    </form>
+
+    <!-- [D] + [E] + [F] 목록 -->
+    <section class="list" aria-label="할일 목록">
+      <div class="toolbar">
+        <div class="filter-tabs" role="group" aria-label="목록 필터">
+          <button type="button" class="filter-tab" data-filter="all" aria-pressed="true">전체</button>
+          <button type="button" class="filter-tab" data-filter="active" aria-pressed="false">진행중</button>
+          <button type="button" class="filter-tab" data-filter="done" aria-pressed="false">완료</button>
+        </div>
+        <label class="hide-done">
+          <input type="checkbox" id="hide-done" class="checkbox">
+          <span>완료 항목 숨기기</span>
+        </label>
+      </div>
+
+      <table class="todo-table" id="todo-table">
+        <thead>
+          <tr>
+            <th scope="col" class="col-check">완료</th>
+            <th scope="col" class="col-text">할일</th>
+            <th scope="col" class="col-date">날짜</th>
+            <th scope="col" class="col-action">관리</th>
+          </tr>
+        </thead>
+        <tbody id="todo-body"></tbody>
+      </table>
+
+      <div class="empty" id="empty-state" hidden>
+        <svg class="empty__icon" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+          <rect x="10" y="8" width="28" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="3"/>
+          <rect x="17" y="4" width="14" height="8" rx="2" fill="currentColor"/>
+          <line x1="16" y1="22" x2="32" y2="22" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <line x1="16" y1="30" x2="27" y2="30" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <p class="empty__title" id="empty-title"></p>
+        <p class="empty__hint" id="empty-hint"></p>
+      </div>
+    </section>
+
+    <!-- [G] 푸터 -->
+    <footer class="app-footer">
+      <p class="app-footer__note">데이터는 이 브라우저에만 저장됩니다.</p>
+      <button type="button" class="btn-text btn-text--danger" id="clear-done">완료 항목 모두 삭제</button>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
